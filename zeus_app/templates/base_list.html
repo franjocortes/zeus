@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header-base %}
+    <link rel="stylesheet"
+          href="{% static 'librerias/adminlte-3.2/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'librerias/adminlte-3.2/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/style_list.css' %}">#}
+{% endblock %}
+
+{% block content %}
+
+    <table class="table" id="table_main">
+        <thead>
+
+        {% block table-head %}
+        {% endblock %}
+
+        </thead>
+        <tbody>
+
+        {% block table-rows %}
+        {% endblock %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block base-footer %}
+    <a href="{{ formpage }}" class="btn btn-outline-primary">
+        {% block button-new-text %}
+            <i class="fas fa-plus"></i> Nuevo
+        {% endblock %}
+    </a>
+{% endblock %}
+
+
+
+{% block js-base %}
+
+    <script src="{% static 'librerias/adminlte-3.2/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'librerias/adminlte-3.2/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'librerias/adminlte-3.2/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'librerias/adminlte-3.2/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+{#    <script src="{% static 'lib/js-cookie-3.0.0/js.cookie.min.js' %}"></script>#}
+{#    <script src="{% static 'lib/adminlte-3.1/plugins/sweetalert2/sweetalert2.all.min.js' %}"></script>#}
+
+    <script>
+        {#$(function () {#}
+        {#    $("#example1").DataTable({#}
+        {#        "responsive": true, "lengthChange": false, "autoWidth": false,#}
+        {#        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]#}
+        {#    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');#}
+        {#    $('#example2').DataTable({#}
+        {#        "paging": true,#}
+        {#        "lengthChange": false,#}
+        {#        "searching": false,#}
+        {#        "ordering": true,#}
+        {#        "info": true,#}
+        {#        "autoWidth": false,#}
+        {#        "responsive": true,#}
+        {#    });#}
+        {# }); #}
+    </script>
+
+    <script type="application/javascript">
+        $(function () {
+            $('#table_main').DataTable({
+                responsive: true,
+                autoWidth: false,
+                'language': {
+                    url: '{% static 'librerias/adminlte-3.2/plugins/datatables/spanish.txt' %}'
+                }
+            });
+        });
+    </script>
+
+    {% block JavaScript-List %}
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header-base %}
+
+    <form method="post" id="main_form"
+            {% if type_form == 'with_files' %}
+          enctype="multipart/form-data"
+            {% endif %} >
+
+        {% if message_info %}
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-info"></i> Información</h5>
+                {{ message_info }}
+            </div>
+        {% endif %}
+
+    </form>
+
+    {% block form-body %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block base-footer %}
+    <button type="submit" form="main_form" class="btn btn-outline-primary">
+        {% if action_form == 'add' or action_form == 'edit' %}
+            <i class="fas fa-save"></i> Guardar
+        {% endif %}
+        {% if action_form == 'del' %}
+            <i class="far fa-trash-alt"></i> Eliminar
+        {% endif %}
+    </button>
+    <a href="{{ listpage }}" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancelar</a>
+{% endblock %}
+
+
+{% block js-base %}
+
+{% endblock %}
