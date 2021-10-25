@@ -1,4 +1,4 @@
-const message_error = (data) => {
+const messageError = (data) => {
     let html = '';
     if (typeof (data) === 'object') {
         $.each(data, function (key, value) {
@@ -18,13 +18,13 @@ const message_error = (data) => {
 // msj: El mensaje que quiero mostrar
 // url: si quiero que me lleve a otro lado cuando termine de mostrar el mensaje
 // function_ok: Funcion que quiero que se ejecute cuando termine de mostrar el mensaje
-const message_info = (msg = 'Mensaje', url = '', function_ok = null) => {
+const messageInfo = (msg = 'Mensaje', url = '', function_ok = null) => {
     Swal.fire({
         position: 'top-end',
         icon: 'success',
         title: msg,
         showConfirmButton: false,
-        timer: 1500
+        timer: 1000
     }).then((r) => {
         if (url !== '') {
             location.href = url;
@@ -36,11 +36,11 @@ const message_info = (msg = 'Mensaje', url = '', function_ok = null) => {
 };
 
 
-const message_question = (msg = 'Mensaje', function_ok) => {
+const messageWithFunction = (msg = 'Mensaje', function_ok) => {
     Swal.fire({
         title: '¿Está seguro?',
         text: msg,
-        icon: 'warning',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -52,20 +52,3 @@ const message_question = (msg = 'Mensaje', function_ok) => {
         }
     })
 };
-
-const submitWithAjax = (title, message, url, parameters, callback) => {
-    Swal.fire({
-        title: title,
-        text: message,
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: "Si",
-        cancelButtonText: "No",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            callback();
-        }
-    })
-}

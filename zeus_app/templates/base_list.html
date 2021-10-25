@@ -7,7 +7,6 @@
           href="{% static 'librerias/adminlte-3.2/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
     <link rel="stylesheet"
           href="{% static 'librerias/adminlte-3.2/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
-    {#    <link rel="stylesheet" href="{% static 'css/style_list.css' %}">#}
 {% endblock %}
 
 {% block content %}
@@ -30,7 +29,6 @@
 {% endblock %}
 
 {% block base-footer %}
-    <!-- Button trigger modal -->
     <button type="button" id="btnNew" class="btn btn-outline-primary">
         {% block button-new-text %}
             <i class="fas fa-plus"></i> Nuevo
@@ -38,35 +36,14 @@
     </button>
 {% endblock %}
 
-
-
 {% block js-base %}
-
     <script src="{% static 'librerias/adminlte-3.2/plugins/datatables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'librerias/adminlte-3.2/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'librerias/adminlte-3.2/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'librerias/adminlte-3.2/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-    {#    <script src="{% static 'lib/js-cookie-3.0.0/js.cookie.min.js' %}"></script>#}
     <script src="{% static 'librerias/adminlte-3.2/plugins/sweetalert2/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'librerias/js-cookie-3.0.0/js.cookie.min.js' %}"></script>
     <script src="{% static 'js/my_msg.js' %}"></script>
-
-    <script>
-        {#$(function () {#}
-        {#    $("#example1").DataTable({#}
-        {#        "responsive": true, "lengthChange": false, "autoWidth": false,#}
-        {#        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]#}
-        {#    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');#}
-        {#    $('#example2').DataTable({#}
-        {#        "paging": true,#}
-        {#        "lengthChange": false,#}
-        {#        "searching": false,#}
-        {#        "ordering": true,#}
-        {#        "info": true,#}
-        {#        "autoWidth": false,#}
-        {#        "responsive": true,#}
-        {#    });#}
-        {# }); #}
-    </script>
 
     <!-- Modal -->
     <div class="modal fade" id="bsModal" data-backdrop="static" tabindex="-1" role="dialog"
@@ -74,7 +51,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">{{ title_form }}</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Titulo Modal</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -86,8 +63,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" id="btnSave" form="formModal" class="btn btn-primary">Guardar</button>
+                    <button type="submit" id="btnSave" form="formModal" class="btn btn-outline-primary"><i
+                            class="fas fa-check"></i> Guardar
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i
+                            class="fas fa-times"></i> Cancelar
+                    </button>
                 </div>
             </div>
         </div>
@@ -95,30 +76,144 @@
 
     <script type="application/javascript">
         $(function () {
-            $('#table_main').DataTable({
+
+            const csrftoken = Cookies.get('csrftoken');
+
+            function csrfSafeMethod(method) {
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+            const table = $('#table_main').DataTable({
                 responsive: true,
                 autoWidth: false,
-                'language': {
+                language: {
                     url: '{% static 'librerias/adminlte-3.2/plugins/datatables/spanish.txt' %}'
+                },
+                destroy: true,
+                deferRender: true,
+                ajax: {
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {'action': 'searchdata'},
+                    dataSrc: ""
+                },
+                columns: [
+                    {"data": "id"},
+                    {"data": "name"},
+                    {"data": "id"},
+                ],
+                columnDefs: [
+                    {
+                        targets: [-1],
+                        class: 'text-center',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            let buttons = `<button class="btn btn-outline-warning btn-sm" aria-label="Modificar"><i class="far fa-edit"></i></button>`;
+                            buttons += ` <button class="btn btn-outline-danger btn-sm" aria-label="Eliminar"><i class="fas fa-trash-alt"></i></button>`;
+                            return buttons;
+                        }
+                    },
+                ],
+                initComplete: function (settings, json) {
                 }
             });
 
             $('#btnNew').on('click', function () {
+                $('#staticBackdropLabel').html('<i class="fas fa-plus"></i> Nuevo(a) {{ title_form }}');
                 $('#bsModal').modal('show');
             });
 
             $("#formModal").on("submit", function (e) {
                 e.preventDefault();
-                let params = new FormData(this);
-                params.append('action', 'create');
+                let params;
 
-                submitWithAjax("Titulo", "Mensaje", "url", "parametros", function () {});
+                {% if type_form == 'with_files' %}
+                    params = new FormData(this);
+                {% endif %}
+                {% if type_form == 'basic' %}
+                    params = $(this).serializeArray();
+                {% endif %}
+
+                messageWithFunction("¿Seguro quieres guardar el registro?", function () {
+                    $.ajax({
+                        url: window.location.pathname,
+                        type: "POST",
+                        data: params,
+                        dataType: "json",
+                        {% if type_form == 'with_files' %}
+                            processData: false,
+                            contentType: false,
+                        {% endif %}
+                    }).done(function (data) {
+                        if (!data.hasOwnProperty("error")) {
+                            messageInfo("Guardado correctamente", "", () => {
+                                table.ajax.reload()
+                            });
+                            $('#bsModal').modal('hide');
+                            return false;
+                        }
+                        messageError(data.error);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        messageError(textStatus + ": " + errorThrown);
+                    })
+                });
+
             });
 
             $('#bsModal').on('hidden.bs.modal', function (e) {
                 // Limpiar el formulario
                 $('#formModal').trigger('reset');
             });
+
+            const delObject = (id, name) => {
+                messageWithFunction(`¿Seguro quiere eliminar el registro #${id} ${name}?`, function () {
+                    $.ajax({
+                        url: window.location.pathname,
+                        type: "POST",
+                        data: {
+                            'action': 'del',
+                            'id': id
+                        },
+                        dataType: "json",
+                    }).done(function (data) {
+                        if (!data.hasOwnProperty("error")) {
+                            messageInfo("Eliminado correctamente", "", () => {
+                                table.ajax.reload()
+                            });
+                            return false;
+                        }
+                        messageError(data.error);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        messageError(textStatus + ": " + errorThrown);
+                    }).always(function (data) {
+                    })
+                })
+            }
+
+            const updObject = (data) => {
+                $('input[name="id"]').val(data.id);
+                $('input[name="name"]').val(data.name);
+                $('input[name="action"]').val('upd');
+                $('#staticBackdropLabel').html('<i class="fas fa-edit"></i> Editar {{ title_form }}');
+                $('#bsModal').modal('show');
+            }
+
+            $('#table_main tbody').on('click', 'button', function () {
+                let data = table.row($(this).parents('tr')).data();
+                if (this.attributes["aria-label"].value === "Eliminar")
+                    delObject(data.id, data.name);
+                if (this.attributes["aria-label"].value === "Modificar")
+                    updObject(data);
+            });
+
         });
     </script>
 
