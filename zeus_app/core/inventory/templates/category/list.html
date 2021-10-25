@@ -1,6 +1,5 @@
 {% extends 'base_list.html' %}
 
-
 {% block table-head %}
     <tr>
         <th class="text-center">#</th>
@@ -8,7 +7,6 @@
         <th></th>
     </tr>
 {% endblock %}
-
 
 {% block table-rows %}
     {% for c in object_list %}
@@ -26,4 +24,14 @@
         </tr>
     {% endfor %}
 
+{% endblock %}
+
+{% block modal-form %}
+    {% csrf_token %}
+    {% for f in form.visible_fields %}
+        <div class="form-group">
+            <label for="id_{{ f.name }}">{{ f.label }}</label>
+            {{ f }}
+        </div>
+    {% endfor %}
 {% endblock %}
