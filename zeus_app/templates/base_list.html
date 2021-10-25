@@ -198,13 +198,7 @@
                 })
             }
 
-            const updObject = (data) => {
-                $('input[name="id"]').val(data.id);
-                $('input[name="name"]').val(data.name);
-                $('input[name="action"]').val('upd');
-                $('#staticBackdropLabel').html('<i class="fas fa-edit"></i> Editar {{ title_form }}');
-                $('#bsModal').modal('show');
-            }
+
 
             $('#table_main tbody').on('click', 'button', function () {
                 let data = table.row($(this).parents('tr')).data();

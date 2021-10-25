@@ -1,20 +1,20 @@
 from django.http import JsonResponse
 from django.views.generic import ListView
 
-from core.inventory.forms import CategoryForm
-from core.inventory.models import Categories
+from core.inventory.forms import TrademarkForm
+from core.inventory.models import Trademarks
 
 
-class CategoryListView(ListView):
-    template_name = 'category/list.html'
-    model = Categories
+class TrademarkListView(ListView):
+    template_name = 'trademark/list.html'
+    model = Trademarks
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Categorías'
+        context['title'] = 'Marcas'
         context['title2'] = 'Listado'
-        context['title_form'] = 'Categoria'
-        context['form'] = CategoryForm()
+        context['title_form'] = 'Marca'
+        context['form'] = TrademarkForm()
         context['type_form'] = 'basic'
         # context['company'] = CompanyData.objects.get(pk=1).name
         # context['formpage'] = reverse_lazy('inventory:category_new')
@@ -26,21 +26,21 @@ class CategoryListView(ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Categories.objects.all():
+                for i in Trademarks.objects.all():
                     data.append(i.toJSON())
             elif action == 'add':
-                form = CategoryForm(request.POST)
+                form = TrademarkForm(request.POST)
                 if form.is_valid():
                     form.save()
                 else:
                     data['error'] = form.errors
             elif action == 'upd':
-                cat = Categories.objects.get(pk=request.POST['id'])
+                cat = Trademarks.objects.get(pk=request.POST['id'])
                 print(cat)
                 cat.name = request.POST['name']
                 cat.save()
             elif action == 'del':
-                category = Categories.objects.get(pk=request.POST['id'])
+                category = Trademarks.objects.get(pk=request.POST['id'])
                 category.delete()
             else:
                 data['error'] = 'Action invalid'

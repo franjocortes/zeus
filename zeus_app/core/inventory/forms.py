@@ -24,3 +24,26 @@ class CategoryForm(ModelForm):
                 }
             ),
         }
+
+
+class TrademarkForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for item in self.visible_fields():
+            item.field.widget.attrs['autocomplete'] = 'off'
+
+        self.fields['name'].widget.attrs['autofocus'] = True
+
+    class Meta:
+        model = Categories
+        fields = '__all__'
+
+        widgets = {
+            'name': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese el nombre de la marca',
+                    'class': 'form-control'
+                }
+            ),
+        }
