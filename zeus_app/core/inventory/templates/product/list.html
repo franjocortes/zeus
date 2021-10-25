@@ -1,0 +1,33 @@
+{% extends 'base_list.html' %}
+
+{% block table-head %}
+    <tr>
+        <th class="text-center">#</th>
+        <th>Nombre</th>
+        <th></th>
+    </tr>
+{% endblock %}
+
+{% block modal-form %}
+    {% csrf_token %}
+    <input type="hidden" name="action" value="add"/>
+    <input type="hidden" name="id" id="id" value="0">
+    {% for f in form.visible_fields %}
+        <div class="form-group">
+            <label for="id_{{ f.name }}">{{ f.label }}</label>
+            {{ f }}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block JavaScript-List %}
+    <script type="application/javascript">
+        const updObject = (data) => {
+            $('input[name="id"]').val(data.id);
+            $('input[name="name"]').val(data.name);
+            $('input[name="action"]').val('upd');
+            $('#staticBackdropLabel').html('<i class="fas fa-edit"></i> Editar {{ title_form }}');
+            $('#bsModal').modal('show');
+        }
+    </script>
+{% endblock %}
