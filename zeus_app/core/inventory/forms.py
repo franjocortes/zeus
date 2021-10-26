@@ -1,6 +1,6 @@
 from django.forms import ModelForm, TextInput
 
-from core.inventory.models import Categories, Trademarks
+from core.inventory.models import Categories, Trademarks, Products
 
 
 class CategoryForm(ModelForm):
@@ -59,13 +59,13 @@ class ProductForm(ModelForm):
         self.fields['name'].widget.attrs['autofocus'] = True
 
     class Meta:
-        model = Trademarks
+        model = Products
         fields = '__all__'
 
         widgets = {
             'name': TextInput(
                 attrs={
-                    'placeholder': 'Ingrese el nombre de la marca',
+                    'placeholder': 'Ingrese el nombre del producto',
                     'class': 'form-control'
                 }
             ),

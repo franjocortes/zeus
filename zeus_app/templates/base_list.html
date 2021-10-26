@@ -128,6 +128,7 @@
 
             $('#btnNew').on('click', function () {
                 $('#staticBackdropLabel').html('<i class="fas fa-plus"></i> Nuevo(a) {{ title_form }}');
+                $('input[name="action"]').val('add');
                 $('#bsModal').modal('show');
             });
 

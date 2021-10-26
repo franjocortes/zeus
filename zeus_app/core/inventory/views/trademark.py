@@ -36,7 +36,6 @@ class TrademarkListView(ListView):
                     data['error'] = form.errors
             elif action == 'upd':
                 cat = Trademarks.objects.get(pk=request.POST['id'])
-                print(cat)
                 cat.name = request.POST['name']
                 cat.save()
             elif action == 'del':
