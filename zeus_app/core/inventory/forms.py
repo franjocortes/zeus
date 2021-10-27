@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, Select, Textarea, NumberInput
 
 from core.inventory.models import Categories, Trademarks, Products
 
@@ -69,4 +69,41 @@ class ProductForm(ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'detail': Textarea(
+                attrs={
+                    'placeholder': 'Ingrese un detalle para el producto',
+                    'class': 'form-control',
+                    'rows': '3'
+                }
+            ),
+            'trademark': Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'category': Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'price_buy': TextInput(
+                attrs={
+                    'class': 'form-control text-right'
+                }
+            ),
+            'price_sell_min': TextInput(
+                attrs={
+                    'class': 'form-control text-right'
+                }
+            ),
+            'price_sell_may': TextInput(
+                attrs={
+                    'class': 'form-control text-right'
+                }
+            ),
+            'stock': NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
         }

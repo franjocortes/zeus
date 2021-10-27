@@ -25,6 +25,7 @@
         const updObject = (data) => {
             $('input[name="id"]').val(data.id);
             $('input[name="name"]').val(data.name);
+            $('input[name="detail"]').val(data.detail);
             $('input[name="action"]').val('upd');
             $('#staticBackdropLabel').html('<i class="fas fa-edit"></i> Editar {{ title_form }}');
             $('#bsModal').modal('show');
