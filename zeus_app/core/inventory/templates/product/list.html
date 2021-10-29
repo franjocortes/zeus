@@ -12,12 +12,47 @@
     {% csrf_token %}
     <input type="hidden" name="action" value="add"/>
     <input type="hidden" name="id" id="id" value="0">
-    {% for f in form.visible_fields %}
-        <div class="form-group">
-            <label for="id_{{ f.name }}">{{ f.label }}</label>
-            {{ f }}
-        </div>
-    {% endfor %}
+
+    <div class="form-group">
+        <label for="id_{{ form.name.name }}">{{ form.name.label }}</label>
+        {{ form.name }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.trademark.name }}">{{ form.trademark.label }}</label>
+        {{ form.trademark }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.category.name }}">{{ form.category.label }}</label>
+        {{ form.category }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.detail.name }}">{{ form.detail.label }}</label>
+        {{ form.detail }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.price_buy.name }}">{{ form.price_buy.label }}</label>
+        {{ form.price_buy }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.price_sell_min.name }}">{{ form.price_sell_min.label }}</label>
+        {{ form.price_sell_min }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.price_sell_may.name }}">{{ form.price_sell_may.label }}</label>
+        {{ form.price_sell_may }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_{{ form.stock.name }}">{{ form.stock.label }}</label>
+        {{ form.stock }}
+    </div>
+
 {% endblock %}
 
 {% block JavaScript-List %}

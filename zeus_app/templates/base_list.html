@@ -57,7 +57,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" id="formModal">
+                    <form method="post" id="formModal"
+                            {% if type_form == 'with_files' %}
+                                enctype="multipart/form-data"
+                            {% endif %} >
+
                         {% block modal-form %}
                         {% endblock %}
                     </form>
@@ -198,7 +202,6 @@
                     })
                 })
             }
-
 
 
             $('#table_main tbody').on('click', 'button', function () {

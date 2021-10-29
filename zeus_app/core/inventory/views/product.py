@@ -6,7 +6,7 @@ from core.inventory.models import Products
 
 
 class ProductListView(ListView):
-    template_name = 'category/list.html'
+    template_name = 'product/list.html'
     model = Products
 
     def get_context_data(self, **kwargs):
