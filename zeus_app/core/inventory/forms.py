@@ -103,7 +103,7 @@ class ProductForm(ModelForm):
             ),
             'stock': NumberInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control text-center'
                 }
             )
         }

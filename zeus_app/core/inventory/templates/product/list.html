@@ -13,57 +13,108 @@
     <input type="hidden" name="action" value="add"/>
     <input type="hidden" name="id" id="id" value="0">
 
-    <div class="form-group">
-        <label for="id_{{ form.name.name }}">{{ form.name.label }}</label>
-        {{ form.name }}
+    <div class="row">
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.name.name }}">{{ form.name.label }}</label>
+                {{ form.name }}
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="id_{{ form.trademark.name }}">{{ form.trademark.label }}</label>
-        {{ form.trademark }}
+    <div class="row">
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.trademark.name }}">{{ form.trademark.label }}</label>
+                {{ form.trademark }}
+            </div>
+        </div>
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.category.name }}">{{ form.category.label }}</label>
+                {{ form.category }}
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="id_{{ form.category.name }}">{{ form.category.label }}</label>
-        {{ form.category }}
+    <div class="row">
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.detail.name }}">{{ form.detail.label }}</label>
+                {{ form.detail }}
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="id_{{ form.detail.name }}">{{ form.detail.label }}</label>
-        {{ form.detail }}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label for="id_{{ form.price_buy.name }}">{{ form.price_buy.label }}</label>
+                {{ form.price_buy }}
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="id_{{ form.price_buy.name }}">{{ form.price_buy.label }}</label>
-        {{ form.price_buy }}
+    <div class="row">
+        <div class="form-check m-2 mb-3">
+            <input class="form-check-input" type="checkbox" id="chkPrecios">
+            <label class="form-check-label" for="chkPrecios">
+                Calcular automaticamente los precios de venta
+            </label>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="id_{{ form.price_sell_min.name }}">{{ form.price_sell_min.label }}</label>
-        {{ form.price_sell_min }}
+    <div class="row">
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.price_sell_min.name }}">{{ form.price_sell_min.label }}</label>
+                {{ form.price_sell_min }}
+            </div>
+        </div>
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.price_sell_may.name }}">{{ form.price_sell_may.label }}</label>
+                {{ form.price_sell_may }}
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="id_{{ form.price_sell_may.name }}">{{ form.price_sell_may.label }}</label>
-        {{ form.price_sell_may }}
-    </div>
-
-    <div class="form-group">
-        <label for="id_{{ form.stock.name }}">{{ form.stock.label }}</label>
-        {{ form.stock }}
+    <div class="row">
+        <div class="col-lg">
+            <div class="form-group">
+                <label for="id_{{ form.stock.name }}">{{ form.stock.label }}</label>
+                {{ form.stock }}
+            </div>
+        </div>
+        <div class="col-lg"></div>
     </div>
 
 {% endblock %}
 
 {% block JavaScript-List %}
     <script type="application/javascript">
-        const updObject = (data) => {
-            $('input[name="id"]').val(data.id);
-            $('input[name="name"]').val(data.name);
-            $('input[name="detail"]').val(data.detail);
-            $('input[name="action"]').val('upd');
-            $('#staticBackdropLabel').html('<i class="fas fa-edit"></i> Editar {{ title_form }}');
-            $('#bsModal').modal('show');
-        }
+
+        $(document).ready(function () {
+            const updObject = (data) => {
+                $('input[name="id"]').val(data.id);
+                $('input[name="name"]').val(data.name);
+                $('input[name="detail"]').val(data.detail);
+                $('input[name="action"]').val('upd');
+                $('#staticBackdropLabel').html('<i class="fas fa-edit"></i> Editar {{ title_form }}');
+                $('#bsModal').modal('show');
+            }
+
+            $("#chkPrecios").click(function () {
+                if (this.checked) {
+                    let pCompra = parseInt($('#id_price_buy').val());
+                    let calculo_min = 50;
+                    let calculo_may = 30;
+
+                    $('#id_price_sell_min').val(pCompra + (pCompra * calculo_min / 100));
+                    $('#id_price_sell_may').val(pCompra + (pCompra * calculo_may / 100));
+                }
+            });
+        });
+
     </script>
 {% endblock %}
