@@ -56,11 +56,17 @@
     </div>
 
     <div class="row">
-        <div class="form-check m-2 mb-3">
-            <input class="form-check-input" type="checkbox" id="chkPrecios">
-            <label class="form-check-label" for="chkPrecios">
-                Calcular automaticamente los precios de venta
-            </label>
+        <div class="col-lg-6">
+            <div class="form-check m-2 mb-3">
+                <input class="form-check-input" type="checkbox" id="chkPrecios">
+                <label class="form-check-label" for="chkPrecios">
+                    Calcular automaticamente los precios de venta
+                </label>
+
+            </div>
+        </div>
+        <div class="col-lg">
+            <button type="button" id="reset" class="btn btn-outline-warning"><i class="fas fa-undo"></i></button>
         </div>
     </div>
 
@@ -113,6 +119,32 @@
                     $('#id_price_sell_min').val(pCompra + (pCompra * calculo_min / 100));
                     $('#id_price_sell_may').val(pCompra + (pCompra * calculo_may / 100));
                 }
+            });
+
+            $("#reset").click(function () {
+                messageWithFunction("¿Seguro quieres deshacer el cálculo automático?", function () {
+
+                    $('#chkPrecios').prop('checked', false);
+
+                    $.ajax({
+                        url: window.location.pathname,
+                        type: "POST",
+                        data: {
+                            action: "reset",
+                            id: $("#id").val()
+                        },
+                        dataType: "json",
+                    }).done(function (data) {
+                        if (!data.hasOwnProperty("error")) {
+                            $("#id_price_sell_min").val(data[0].price_sell_min);
+                            $("#id_price_sell_may").val(data[0].price_sell_may);
+                            return false;
+                        }
+                        messageError(data.error);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        messageError(textStatus + ": " + errorThrown);
+                    })
+                });
             });
         });
 

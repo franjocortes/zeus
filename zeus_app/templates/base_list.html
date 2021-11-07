@@ -122,6 +122,7 @@
                         render: function (data, type, row) {
                             let buttons = `<button class="btn btn-outline-warning btn-sm" aria-label="Modificar"><i class="far fa-edit"></i></button>`;
                             buttons += ` <button class="btn btn-outline-danger btn-sm" aria-label="Eliminar"><i class="fas fa-trash-alt"></i></button>`;
+                            buttons += ` <button class="btn btn-outline-primary btn-sm" aria-label="Imprimir QR"><i class="fas fa-qrcode"></i></button>`;
                             return buttons;
                         }
                     },
@@ -195,6 +196,10 @@
                             });
                             return false;
                         }
+                        if (data.error.indexOf("referenced")) {
+                            messageError("No puede eliminarse, está siendo usado por otros registros");
+                            return false;
+                        }
                         messageError(data.error);
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         messageError(textStatus + ": " + errorThrown);
@@ -210,6 +215,8 @@
                     delObject(data.id, data.name);
                 if (this.attributes["aria-label"].value === "Modificar")
                     updObject(data);
+                if (this.attributes["aria-label"].value === "Imprimir QR")
+                    console.log("PRINT");
             });
 
         });

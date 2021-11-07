@@ -41,6 +41,15 @@ class ProductListView(ListView):
             elif action == 'del':
                 category = Products.objects.get(pk=request.POST['id'])
                 category.delete()
+            elif action == 'reset':
+                if int(request.POST['id']) > 0:
+                    product = Products.objects.get(pk=request.POST['id'])
+                    data = [product.toJSON()]
+                else:
+                    data = [{
+                        'price_sell_min': 0.0,
+                        'price_sell_may': 0.0,
+                    }]
             else:
                 data['error'] = 'Action invalid'
         except Exception as e:
